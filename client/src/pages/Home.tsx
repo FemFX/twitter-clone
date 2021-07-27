@@ -198,6 +198,11 @@ export const useStyles = makeStyles(() => ({
     textAlign: "center",
     marginTop: 30,
   },
+  link: {
+    display: "flex",
+    alignItems: "center",
+    color: "#000",
+  },
 }));
 
 const Home: React.FC = (): React.ReactElement => {
