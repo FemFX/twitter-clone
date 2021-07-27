@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Switch, Route, useHistory } from "react-router-dom";
-import Signin from "./pages/Signin";
-import Home from "./pages/Home";
 import { fetchUserData } from "./redux/user/action";
 import { selectIsAuth, selectUserStatus } from "./redux/user/selectors";
 import { Loading } from "./redux/tweets/state";
 import { Twitter } from "@material-ui/icons";
+
+import Signin from "./pages/Signin";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ function App() {
       <Switch>
         <Route path="/signin" component={Signin} />
         <Route path="/home" component={Home} />
+        <Route path="/home/profile" component={Profile} />
       </Switch>
     </div>
   );
