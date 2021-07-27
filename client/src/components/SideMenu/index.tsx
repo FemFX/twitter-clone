@@ -43,13 +43,15 @@ const SideMenu: React.FC<ISideMenuProps> = ({
       </li>
       <li className={classes.sideMenuListItem}>
         <div>
-          <IconButton>
-            <Person className={classes.sideMenuListItemIcon} />
-          </IconButton>
+          <Link to="/home/profile" className={classes.link}>
+            <IconButton>
+              <Person className={classes.sideMenuListItemIcon} />
+            </IconButton>
 
-          <Typography className={classes.sideMenuListItemLabel} variant="h6">
-            Профиль
-          </Typography>
+            <Typography className={classes.sideMenuListItemLabel} variant="h6">
+              Профиль
+            </Typography>
+          </Link>
         </div>
       </li>
       <li className={classes.sideMenuListItem}>
