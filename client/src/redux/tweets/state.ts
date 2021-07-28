@@ -14,6 +14,7 @@ export enum AddForm {
 export interface ITweet {
   _id: string;
   text: string;
+  images? : any[];
   user: {
     fullname: string;
     username: string;
