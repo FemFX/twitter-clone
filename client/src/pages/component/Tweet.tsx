@@ -16,9 +16,10 @@ import {
 } from "@material-ui/core";
 import { Chat, Share, Favorite, Publish } from "@material-ui/icons";
 import classNames from "classnames";
-
+import ImageList from "../../components/ImageList";
 import format from "date-fns/format";
 import ruLang from "date-fns/locale/ru";
+import mediumZoom from "medium-zoom";
 
 interface ITweetItemProps {
   classes: ReturnType<typeof useStyles>;
@@ -27,14 +28,18 @@ interface ITweetItemProps {
 const TweetItem: React.FC<ITweetItemProps> = ({
   classes,
 }: ITweetItemProps): React.ReactElement | null => {
+  const dispatch = useDispatch();
   const tweet: any = useSelector(selectTweetItem);
   const isLoading = useSelector(selectTweetLoading);
-  const dispatch = useDispatch();
+
   const params: { id: string } = useParams();
   const id = params.id;
+
   useEffect(() => {
     dispatch(fetchTweet(id));
+    mediumZoom(".tweet-images");
   }, [dispatch, id]);
+
   if (isLoading) {
     return (
       <div className={classes.loading}>
@@ -42,6 +47,7 @@ const TweetItem: React.FC<ITweetItemProps> = ({
       </div>
     );
   }
+
   if (tweet)
     return (
       <div>
@@ -64,6 +70,11 @@ const TweetItem: React.FC<ITweetItemProps> = ({
           </div>
           <Typography className={classes.fullTweetText} gutterBottom>
             {tweet.text}
+            <div className="tweet-images">
+              {tweet.images && (
+                <ImageList classes={classes} images={tweet.images} />
+              )}
+            </div>
           </Typography>
           <Typography>
             <span className={classes.tweetsUsername} style={{ marginLeft: 10 }}>
