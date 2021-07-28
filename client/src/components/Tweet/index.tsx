@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { Paper, IconButton, Typography, Avatar } from "@material-ui/core";
@@ -11,10 +12,13 @@ import {
 } from "@material-ui/icons";
 import { formatDate } from "../../utils/formatDate";
 import { useStyles } from "../../pages/Home";
+import ImageList from "../ImageList";
+import { removeTweet } from "../../redux/tweets/action";
 
 interface ITweetProps {
   _id: string;
   text: string;
+  images?: any[];
   classes: ReturnType<typeof useStyles>;
   user: {
     fullname: string;
@@ -29,9 +33,17 @@ const Tweet: React.FC<ITweetProps> = ({
   classes,
   text,
   user,
+  images,
   createdAt,
 }: ITweetProps): React.ReactElement => {
-
+  const dispatch = useDispatch();
+  const handleRemove = (e: React.MouseEvent<HTMLElement>): void => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (window.confirm("Вы действительно хотите удалить твит?")) {
+      dispatch(removeTweet(_id));
+    }
+  };
   return (
     <Link to={`/home/tweet/${_id}`}>
       <Paper
@@ -51,6 +63,7 @@ const Tweet: React.FC<ITweetProps> = ({
 
           <Typography variant="body1" gutterBottom>
             {text}
+            {images && <ImageList classes={classes} images={images} />}
           </Typography>
           <div className={classes.tweetsFooter1} style={{ width: 450 }}>
             <div>
@@ -80,7 +93,7 @@ const Tweet: React.FC<ITweetProps> = ({
               </IconButton>
             </div>
             <div>
-              <IconButton color="secondary">
+              <IconButton color="secondary" onClick={handleRemove}>
                 <Delete style={{ fontSize: 16 }} />
               </IconButton>
             </div>
