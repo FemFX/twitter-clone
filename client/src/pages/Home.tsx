@@ -101,8 +101,6 @@ export const useStyles = makeStyles(() => ({
   },
   tweetsFooter: {
     display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
     width: "100%",
   },
   tweetsFooter1: {
@@ -203,6 +201,22 @@ export const useStyles = makeStyles(() => ({
     alignItems: "center",
     color: "#000",
   },
+  imagesList: {
+    display: "flex",
+    alignItems: "center",
+    marginTop: 15,
+    flexWrap: "wrap",
+  },
+  imagesListItem: {
+    width: 50,
+    height: 50,
+    overflow: "hidden",
+    borderRadius: 6,
+    marginRight: 10,
+    marginBottom: 8,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  },
 }));
 
 const Home: React.FC = (): React.ReactElement => {
@@ -247,7 +261,12 @@ const Home: React.FC = (): React.ReactElement => {
                 </div>
               ) : (
                 tweets.map((tweet, idx) => (
-                  <Tweet key={tweet._id} {...tweet} classes={classes} />
+                  <Tweet
+                    key={tweet._id}
+                    {...tweet}
+                    classes={classes}
+                    images={tweet.images}
+                  />
                 ))
               )}
             </Route>
