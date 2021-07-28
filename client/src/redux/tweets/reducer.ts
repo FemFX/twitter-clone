@@ -22,6 +22,9 @@ const tweetsReducer = produce(
       case TweetActionsType.FETCH_ADD_TWEET:
         draft.addFormStatus = AddForm.LOADING;
         break;
+      case TweetActionsType.REMOVE_TWEET:
+        draft.items = draft.items.filter(obj => obj._id !== action.payload)
+        break;
       case TweetActionsType.ADD_TWEET:
         draft.items.push(action.payload);
         draft.addFormStatus = AddForm.NEVER;
