@@ -4,6 +4,7 @@ import { ITweetsState, Loading, ITweet, AddForm } from "./state";
 export enum TweetActionsType {
   SET_TWEETS = "TWEETS/SET_TWEETS",
   ADD_TWEET = "TWEETS/ADD_TWEET",
+  REMOVE_TWEET = "TWEETS/REMOVE_TWEET",
   FETCH_ADD_TWEET = "TWEETS/FETCH_ADD_TWEET",
   FETCH_TWEETS = "TWEETS/FETCH_TWEETS",
   SET_LOADING = "TWEETS/SET_LOADING",
@@ -18,9 +19,16 @@ export interface AddTweetActionInterface extends Action<TweetActionsType> {
   type: TweetActionsType.ADD_TWEET;
   payload: ITweet;
 }
+export interface RemoveTweetActionInterface extends Action<TweetActionsType> {
+  type: TweetActionsType.REMOVE_TWEET;
+  payload: string;
+}
 export interface FetchAddTweetActionInterface extends Action<TweetActionsType> {
   type: TweetActionsType.FETCH_ADD_TWEET;
-  payload: string;
+  payload: {
+    text: string;
+    images: string[];
+  };
 }
 export interface FetchTweetsActionInterface extends Action<TweetActionsType> {
   type: TweetActionsType.FETCH_TWEETS;
@@ -44,9 +52,14 @@ export const addTweet = (payload: ITweet): AddTweetActionInterface => ({
   type: TweetActionsType.ADD_TWEET,
   payload,
 });
-export const fetchAddTweet = (
-  payload: string
-): FetchAddTweetActionInterface => ({
+export const removeTweet = (payload: string): RemoveTweetActionInterface => ({
+  type: TweetActionsType.REMOVE_TWEET,
+  payload,
+});
+export const fetchAddTweet = (payload: {
+  text: string;
+  images: string[];
+}): FetchAddTweetActionInterface => ({
   type: TweetActionsType.FETCH_ADD_TWEET,
   payload,
 });
@@ -68,4 +81,5 @@ export type TweetsActions =
   | FetchTweetsActionInterface
   | FetchAddTweetActionInterface
   | AddTweetActionInterface
-  | SetAddFormInterface;
+  | SetAddFormInterface
+  | RemoveTweetActionInterface;
