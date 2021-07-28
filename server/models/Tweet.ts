@@ -12,6 +12,11 @@ const TweetSchema = new Schema(
       ref: "User",
       required: true,
     },
+    images: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );
