@@ -15,10 +15,11 @@ export const TweetsApi = {
     const { data } = await axios.get<Response<ITweet>>(`/tweets/${id}`);
     return data.data;
   },
-  async addTweet(payload: string): Promise<ITweet> {
-    const { data } = await axios.post<Response<ITweet>>("/tweets", {
-      text: payload,
-    });
+  async addTweet(payload: { text: string; images: string[] }): Promise<ITweet> {
+    const { data } = await axios.post<Response<ITweet>>("/tweets", payload);
     return data.data;
+  },
+  async removeTweet(id: string): Promise<void> {
+    await axios.delete<Response<ITweet>>(`/tweets/${id}`);
   },
 };
