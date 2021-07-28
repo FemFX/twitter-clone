@@ -3,20 +3,24 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   TextareaAutosize,
   CircularProgress,
-  IconButton,
   Avatar,
   Button,
   Snackbar,
 } from "@material-ui/core";
-import { Image, EmojiEmotions } from "@material-ui/icons";
 import classNames from "classnames";
 import { useStyles } from "../../pages/Home";
 import { fetchAddTweet } from "../../redux/tweets/action";
 import { selectAddForm } from "../../redux/tweets/selectors";
 import { AddForm } from "../../redux/tweets/state";
+import UploadImage from "../UploadImage";
+import { uploadImage } from "../../utils/UploadImage";
 
 interface IAddTweetFormProps {
   classes: ReturnType<typeof useStyles>;
+}
+export interface IImageObj {
+  file: File;
+  blobUrl: string;
 }
 
 const AddTweetForm: React.FC<IAddTweetFormProps> = ({
@@ -26,6 +30,8 @@ const AddTweetForm: React.FC<IAddTweetFormProps> = ({
   const addFormStatus = useSelector(selectAddForm);
   const [text, setText] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(false);
+
+  const [images, setImages] = useState<IImageObj[]>([]);
 
   const textLimitPercent: number = (text.length / 280) * 100;
   const handleChangeTextarea = (
@@ -45,9 +51,17 @@ const AddTweetForm: React.FC<IAddTweetFormProps> = ({
     }
   }, [addFormStatus]);
 
-  const handleAddTweet = (): void => {
-    dispatch(fetchAddTweet(text));
+  const handleAddTweet = async (): Promise<void> => {
+    let urls = [];
+    for (let i = 0; i < images.length; i++) {
+      const file = images[i].file;
+      const { url } = await uploadImage(file);
+      urls.push(url);
+    }
+
+    dispatch(fetchAddTweet({ text, images: urls }));
     setText("");
+    setImages([])
   };
   const handleClose = () => {
     setVisible(false);
@@ -79,12 +93,11 @@ const AddTweetForm: React.FC<IAddTweetFormProps> = ({
               classes.addFormBottomActions
             )}
           >
-            <IconButton color="primary">
-              <Image style={{ fontSize: 26 }} />
-            </IconButton>
-            <IconButton color="primary">
-              <EmojiEmotions style={{ fontSize: 26 }} />
-            </IconButton>
+            <UploadImage
+              images={images}
+              onChangeImages={setImages}
+              classes={classes}
+            />
           </div>
           <div className={classes.addFormBottomRight}>
             <span>{text.length}/280</span>
